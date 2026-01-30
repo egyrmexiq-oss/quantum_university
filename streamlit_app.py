@@ -46,25 +46,6 @@ if not st.session_state.usuario_activo:
         unsafe_allow_html=True
     )
 
-    st.info("🔑 Para ingresar, usa la clave: **DEMO**")
-
-    clave = st.text_input("Clave de Acceso:", type="password")
-    if st.button("Entrar"):
-        if clave.strip() == "DEMO" or (
-            "access_keys" in st.secrets
-            and clave.strip() in st.secrets["access_keys"]
-        ):
-            nombre = (
-                "Visitante"
-                if clave.strip() == "DEMO"
-                else st.secrets["access_keys"][clave.strip()]
-            )
-            st.session_state.usuario_activo = nombre
-            st.rerun()
-        else:
-            st.error("Acceso Denegado")
-    st.stop()
-
 from fpdf import FPDF
 import os
 
@@ -87,7 +68,25 @@ def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
     ruta = os.path.join("/mnt/data", nombre_archivo)
     pdf.output(ruta)
     return ruta
+    
+    st.info("🔑 Para ingresar, usa la clave: **DEMO**")
 
+    clave = st.text_input("Clave de Acceso:", type="password")
+    if st.button("Entrar"):
+        if clave.strip() == "DEMO" or (
+            "access_keys" in st.secrets
+            and clave.strip() in st.secrets["access_keys"]
+        ):
+            nombre = (
+                "Visitante"
+                if clave.strip() == "DEMO"
+                else st.secrets["access_keys"][clave.strip()]
+            )
+            st.session_state.usuario_activo = nombre
+            st.rerun()
+        else:
+            st.error("Acceso Denegado")
+    st.stop()
     
 # ✅ Generar el PDF primero
 ruta_pdf = generar_pdf_sesion()
