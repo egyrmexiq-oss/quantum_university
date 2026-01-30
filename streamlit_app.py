@@ -16,7 +16,7 @@ if "usuario_activo" not in st.session_state:
 # 🔐 1. LOGIN / LANDING QUANTUM UNIVERSITY
 # ==========================================
 if not st.session_state.usuario_activo:
-    st.markdown("## 🔐 Quantum Access – University")
+    st.markdown("## 🔐 Quantum – University")
 
     # Animación 3D (puedes cambiar la URL por otra de Spline)
     try:
