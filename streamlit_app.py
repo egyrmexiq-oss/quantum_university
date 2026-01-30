@@ -18,8 +18,13 @@ def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
     for msg in mensajes:
         rol = "Usuario" if msg["role"] == "user" else "Asistente"
         contenido = msg["content"].strip()
-        pdf.multi_cell(0, 10, txt=f"{rol}: {contenido}")
+
+    # 🔹 Limpiar emojis / caracteres fuera de latin-1
+        contenido_limpio = contenido.encode("latin-1", "ignore").decode("latin-1")
+
+        pdf.multi_cell(0, 10, txt=f"{rol}: {contenido_limpio}")
         pdf.ln(2)
+
 
     ruta = nombre_archivo  # ✅ guarda en el directorio actual
     pdf.output(ruta)
