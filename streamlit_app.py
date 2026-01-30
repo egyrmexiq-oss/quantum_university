@@ -122,7 +122,7 @@ PROFESORES_EJEMPLO = [
 # ==========================================
 with st.sidebar:
     try:
-        st.image("Logo_quantum.png", use_container_width=True)
+        st.image("logo_quantum.png", use_container_width=True)
     except:
         st.header("QUANTUM UNIVERSITY")
 
