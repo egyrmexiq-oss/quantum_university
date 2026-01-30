@@ -49,25 +49,7 @@ if not st.session_state.usuario_activo:
 from fpdf import FPDF
 import os
 
-def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
-    mensajes = st.session_state.get("mensajes", [])
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
 
-    pdf.set_title("Sesión Quantum University")
-    pdf.cell(200, 10, txt="Sesión Quantum University", ln=True, align="C")
-    pdf.ln(10)
-
-    for msg in mensajes:
-        rol = "Usuario" if msg["role"] == "user" else "Asistente"
-        contenido = msg["content"].strip()
-        pdf.multi_cell(0, 10, txt=f"{rol}: {contenido}")
-        pdf.ln(2)
-
-    ruta = os.path.join("/mnt/data", nombre_archivo)
-    pdf.output(ruta)
-    return ruta
     
     st.info("🔑 Para ingresar, usa la clave: **DEMO**")
 
@@ -88,20 +70,6 @@ def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
             st.error("Acceso Denegado")
     st.stop()
     
-# ✅ Generar el PDF primero
-ruta_pdf = generar_pdf_sesion()
-
-# ✅ Descargar el PDF generado
-with open(ruta_pdf, "rb") as f:
-    st.download_button(
-        label="📄 Descargar sesión en PDF",
-        data=f.read(),
-        file_name="sesion_quantum_university.pdf",
-        mime="application/pdf"
-    )
-
-
-
 st.download_button(
     label="📥 Descargar sesión en PDF",
     data=open("/mnt/data/sesion_quantum_university.pdf", "rb").read(),
