@@ -153,10 +153,10 @@ if not st.session_state.usuario_activo:
             }
         ]
             
-            st.rerun()
-        else:
-            st.error("Acceso Denegado")
-    st.stop()
+        st.rerun()
+    else:
+        st.error("Acceso Denegado")
+        st.stop()
 
     
 #st.download_button(
