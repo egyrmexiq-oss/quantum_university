@@ -212,6 +212,42 @@ with st.sidebar:
     if c2.button("➡️"):
         st.session_state.prof_idx += 1
         st.rerun()
+    # ==========================================
+    # 📷 OCR – ESCANEO DE DOCUMENTOS
+    # ==========================================
+    st.markdown("---")
+    st.markdown("### 📄 Escanear Documento (OCR)")
+
+    archivo_ocr = st.file_uploader(
+        "Sube una imagen con texto (PNG, JPG, JPEG)",
+        type=["png", "jpg", "jpeg"],
+        key="ocr_uploader"
+    )
+
+    if archivo_ocr:
+        try:
+            from PIL import Image
+            import pytesseract
+
+            img_ocr = Image.open(archivo_ocr)
+
+            st.image(img_ocr, caption="Imagen cargada", use_container_width=True)
+
+            st.markdown("🔍 **Extrayendo texto...**")
+
+            texto_extraido = pytesseract.image_to_string(img_ocr, lang="spa")
+
+            st.text_area("📌 Texto Detectado:", texto_extraido, height=150)
+
+            if st.button("📚 Enviar al Tutor Quantum", key="btn_ocr_enviar"):
+                st.session_state.mensajes.append({
+                    "role": "user",
+                    "content": f"Texto escaneado:\n\n{texto_extraido}"
+                })
+                st.rerun()
+
+        except Exception as e:
+            st.error(f"Error procesando la imagen: {e}")
 
 # ==========================================
 # 💬 5. PANTALLA PRINCIPAL – TUTOR ACADÉMICO
