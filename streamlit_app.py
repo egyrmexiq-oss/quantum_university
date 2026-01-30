@@ -146,6 +146,16 @@ if not st.session_state.usuario_activo:
         else:
             st.error("Acceso Denegado")
     st.stop()
+    if "mensajes" not in st.session_state:
+        st.session_state.mensajes = [
+            {
+                "role": "assistant",
+                "content": (
+                    "Hola, soy tu tutor Quantum. "
+                    "Cuéntame qué tema, tarea o concepto quieres comprender mejor."
+                )
+            }
+        ]
     
 #st.download_button(
     #label="📥 Descargar sesión en PDF",
