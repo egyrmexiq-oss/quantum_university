@@ -14,10 +14,6 @@ def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
     pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True) pdf.set_font("DejaVu", size=12)
     pdf.ln(10)
 
-
-    pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True) pdf.set_font("DejaVu", size=12)
-    pdf.ln(10)
-
     for msg in mensajes:
         rol = "Usuario" if msg["role"] == "user" else "Asistente"
         contenido = msg["content"].strip()
