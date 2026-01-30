@@ -6,30 +6,80 @@ import streamlit.components.v1 as components
 
 from fpdf import FPDF
 import os
+from datetime import datetime
 
 def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
     mensajes = st.session_state.get("mensajes", [])
+
+    # Crear PDF
     pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+
+    # Cargar fuente Unicode
+    pdf.add_font("DejaVu", "", "fonts/DejaVuSans.ttf", uni=True)
+    pdf.set_font("DejaVu", size=14)
+
+    # ================================
+    # 📄 PORTADA
+    # ================================
     pdf.add_page()
-    #pdf.add_font("ArialUnicode", "", "ArialUnicodeMS.ttf", uni=True)
-    #pdf.set_font("Arial", size=12)
-    pdf.add_font("DejaVu", "", "fonts/DejaVuSans.ttf", uni=True) 
+
+    # Título principal
+    pdf.set_font("DejaVu", size=26)
+    pdf.cell(0, 15, "Quantum University", ln=True, align="C")
+
+    # Subtítulo
+    pdf.set_font("DejaVu", size=14)
+    pdf.cell(0, 10, "Sesión educativa personalizada", ln=True, align="C")
+    pdf.ln(10)
+
+    # Logo (texto por ahora)
     pdf.set_font("DejaVu", size=12)
+    pdf.cell(0, 10, "Logo Quantum", ln=True, align="C")
+    pdf.ln(10)
+
+    # Datos del usuario
+    usuario = st.session_state.get("usuario_activo", "Desconocido")
+    fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+    pdf.set_font("DejaVu", size=12)
+    pdf.cell(0, 8, f"👤 Usuario: {usuario}", ln=True)
+    pdf.cell(0, 8, f"📘 Materia: {materia}", ln=True)
+    pdf.cell(0, 8, f"🎓 Nivel educativo: {nivel_educativo}", ln=True)
+    pdf.cell(0, 8, f"🧭 Modo de ayuda: {modo}", ln=True)
+    pdf.cell(0, 8, f"📅 Fecha: {fecha}", ln=True)
+
+    pdf.ln(15)
+    pdf.set_font("DejaVu", size=12)
+    pdf.multi_cell(0, 8, "A continuación se muestra el registro completo de la sesión con el tutor Quantum.")
+    pdf.ln(10)
+
+    # ================================
+    # 💬 CONTENIDO DEL CHAT
+    # ================================
+    pdf.add_page()
+    pdf.set_font("DejaVu", size=12)
+
+    pdf.cell(0, 10, "📄 Registro de la sesión", ln=True)
+    pdf.ln(5)
 
     for msg in mensajes:
         rol = "Usuario" if msg["role"] == "user" else "Asistente"
         contenido = msg["content"].strip()
 
-    # 🔹 Limpiar emojis / caracteres fuera de latin-1
+        # Limpiar caracteres no soportados
         contenido_limpio = contenido.encode("latin-1", "ignore").decode("latin-1")
 
-        pdf.multi_cell(0, 10, txt=f"{rol}: {contenido_limpio}")
+        pdf.set_font("DejaVu", size=12)
+        pdf.multi_cell(0, 8, f"{rol}: {contenido_limpio}")
         pdf.ln(2)
 
-
-    ruta = nombre_archivo  # ✅ guarda en el directorio actual
+    # Guardar PDF
+    ruta = nombre_archivo
     pdf.output(ruta)
+
     return ruta
+
 
 
 
