@@ -11,8 +11,9 @@ def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
     mensajes = st.session_state.get("mensajes", [])
     pdf = FPDF()
     pdf.add_page()
-    pdf.add_font("DejaVu", "", "DejaVuSans.ttf", uni=True) pdf.set_font("DejaVu", size=12)
-    pdf.ln(10)
+    pdf.add_font("ArialUnicode", "", "ArialUnicodeMS.ttf", uni=True)
+    pdf.set_font("ArialUnicode", size=12)
+
 
     for msg in mensajes:
         rol = "Usuario" if msg["role"] == "user" else "Asistente"
