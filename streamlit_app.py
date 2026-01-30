@@ -66,6 +66,13 @@ if not st.session_state.usuario_activo:
 
     st.stop()
 
+st.download_button(
+    label="📥 Descargar sesión en PDF",
+    data=open("/mnt/data/sesion_quantum_university.pdf", "rb").read(),
+    file_name="sesion_quantum_university.pdf",
+    mime="application/pdf"
+)
+
 # ==========================================
 # 🤖 2. CONEXIÓN IA (DEEPSEEK)
 # ==========================================
