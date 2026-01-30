@@ -23,9 +23,10 @@ def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
         pdf.multi_cell(0, 10, txt=f"{rol}: {contenido}")
         pdf.ln(2)
 
-    ruta = os.path.join("/mnt/data", nombre_archivo)
+    ruta = nombre_archivo  # ✅ guarda en el directorio actual
     pdf.output(ruta)
     return ruta
+
 
 
 # ==========================================
