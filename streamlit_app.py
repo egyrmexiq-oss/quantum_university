@@ -142,10 +142,6 @@ if not st.session_state.usuario_activo:
                 else st.secrets["access_keys"][clave.strip()]
             )
             st.session_state.usuario_activo = nombre
-            st.rerun()
-        else:
-            st.error("Acceso Denegado")
-    st.stop()
     if "mensajes" not in st.session_state:
         st.session_state.mensajes = [
             {
@@ -156,6 +152,12 @@ if not st.session_state.usuario_activo:
                 )
             }
         ]
+            
+            st.rerun()
+        else:
+            st.error("Acceso Denegado")
+    st.stop()
+
     
 #st.download_button(
     #label="📥 Descargar sesión en PDF",
