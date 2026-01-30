@@ -4,6 +4,30 @@ import requests
 import pandas as pd
 import streamlit.components.v1 as components
 
+from fpdf import FPDF
+import os
+
+def generar_pdf_sesion(nombre_archivo="sesion_quantum_university.pdf"):
+    mensajes = st.session_state.get("mensajes", [])
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    pdf.set_title("Sesión Quantum University")
+    pdf.cell(200, 10, txt="Sesión Quantum University", ln=True, align="C")
+    pdf.ln(10)
+
+    for msg in mensajes:
+        rol = "Usuario" if msg["role"] == "user" else "Asistente"
+        contenido = msg["content"].strip()
+        pdf.multi_cell(0, 10, txt=f"{rol}: {contenido}")
+        pdf.ln(2)
+
+    ruta = os.path.join("/mnt/data", nombre_archivo)
+    pdf.output(ruta)
+    return ruta
+
+
 # ==========================================
 # ⚙️ CONFIGURACIÓN DE PÁGINA
 # ==========================================
@@ -332,4 +356,20 @@ Estudiante:
 
     except Exception as e:
         st.error(f"Error: {e}")
+
+# ==========================================
+# 📄 DESCARGA DE SESIÓN EN PDF
+# ==========================================
+try:
+    ruta_pdf = generar_pdf_sesion()
+    with open(ruta_pdf, "rb") as f:
+        st.download_button(
+            label="📥 Descargar sesión en PDF",
+            data=f.read(),
+            file_name="sesion_quantum_university.pdf",
+            mime="application/pdf"
+        )
+except Exception as e:
+    st.error(f"No se pudo generar el PDF: {e}")
+
 
