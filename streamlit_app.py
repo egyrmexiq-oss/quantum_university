@@ -46,8 +46,6 @@ if not st.session_state.usuario_activo:
         unsafe_allow_html=True
     )
 
-from fpdf import FPDF
-import os
 
 
     
