@@ -131,32 +131,35 @@ if not st.session_state.usuario_activo:
     st.info("🔑 Para ingresar, usa la clave: **DEMO**")
 
     clave = st.text_input("Clave de Acceso:", type="password")
-    if st.button("Entrar"):
-        if clave.strip() == "DEMO" or (
-            "access_keys" in st.secrets
-            and clave.strip() in st.secrets["access_keys"]
-        ):
-            nombre = (
-                "Visitante"
-                if clave.strip() == "DEMO"
-                else st.secrets["access_keys"][clave.strip()]
-            )
-            st.session_state.usuario_activo = nombre
-    if "mensajes" not in st.session_state:
-        st.session_state.mensajes = [
-            {
-                "role": "assistant",
-                "content": (
-                    "Hola, soy tu tutor Quantum. "
-                    "Cuéntame qué tema, tarea o concepto quieres comprender mejor."
-                )
-            }
-        ]
-            
+if st.button("Entrar"):
+    if clave.strip() == "DEMO" or (
+        "access_keys" in st.secrets
+        and clave.strip() in st.secrets["access_keys"]
+    ):
+        nombre = (
+            "Visitante"
+            if clave.strip() == "DEMO"
+            else st.secrets["access_keys"][clave.strip()]
+        )
+        st.session_state.usuario_activo = nombre
+
+        # ✅ Inicializar mensajes antes del rerun
+        if "mensajes" not in st.session_state:
+            st.session_state.mensajes = [
+                {
+                    "role": "assistant",
+                    "content": (
+                        "Hola, soy tu tutor Quantum. "
+                        "Cuéntame qué tema, tarea o concepto quieres comprender mejor."
+                    )
+                }
+            ]
+
         st.rerun()
     else:
         st.error("Acceso Denegado")
         st.stop()
+
 
     
 #st.download_button(
@@ -427,16 +430,25 @@ Estudiante:
 # ==========================================
 # 📄 DESCARGA DE SESIÓN EN PDF
 # ==========================================
-try:
-    ruta_pdf = generar_pdf_sesion()
-    with open(ruta_pdf, "rb") as f:
-        st.download_button(
-            label="📥 Descargar sesión en PDF",
-            data=f.read(),
-            file_name="sesion_quantum_university.pdf",
-            mime="application/pdf"
-        )
-except Exception as e:
-    st.error(f"No se pudo generar el PDF: {e}")
-
-
+# ==========================================
+# 📄 DESCARGA DE SESIÓN EN PDF (SEGURO)
+# ==========================================
+if (
+    "usuario_activo" in st.session_state 
+    and st.session_state.usuario_activo 
+    and "mensajes" in st.session_state 
+    and len(st.session_state.mensajes) > 0
+):
+    try:
+        ruta_pdf = generar_pdf_sesion()
+        with open(ruta_pdf, "rb") as f:
+            st.download_button(
+                label="📥 Descargar sesión en PDF",
+                data=f.read(),
+                file_name="sesion_quantum_university.pdf",
+                mime="application/pdf"
+            )
+    except Exception as e:
+        st.error(f"No se pudo generar el PDF: {e}")
+else:
+    st.info("Inicia sesión y genera al menos un mensaje para habilitar la descarga en PDF.")
