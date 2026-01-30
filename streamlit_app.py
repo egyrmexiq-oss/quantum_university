@@ -91,6 +91,12 @@ def deepseek_request(messages, model="deepseek-chat", temperature=0.7):
         raise Exception(f"DeepSeek Error: {resp.text}")
     data = resp.json()
     return data["choices"][0]["message"]["content"]
+st.download_button(
+    label="📥 Descargar sesión en PDF",
+    data=open("/mnt/data/sesion_quantum_university.pdf", "rb").read(),
+    file_name="sesion_quantum_university.pdf",
+    mime="application/pdf"
+)
 
 # ==========================================
 # 📚 3. DATOS EDUCATIVOS (EJEMPLO SIMPLE)
