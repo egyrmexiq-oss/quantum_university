@@ -65,9 +65,6 @@ if not st.session_state.usuario_activo:
             st.error("Acceso Denegado")
     st.stop()
     
-from fpdf import FPDF
-import os
-
 # ✅ Generar el PDF primero
 ruta_pdf = generar_pdf_sesion()
 
